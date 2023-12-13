@@ -1,0 +1,76 @@
+"""Problem statement
+Create famous 'Frog leap' puzzle game. Try completing the game before starting to get an idea about its working. Demonstration.
+
+Rules
+The left set of frogs can only move right, the right set of frogs can only move left.
+Frogs can move forward one space, or move two spaces by jumping over another frog from opposite side.
+The puzzle is solved when the two sets of frogs have switched positions."""
+
+# Checking if entered position is valid
+def pos_check(pos):
+    pos2 = 0
+    if pos<0 or pos>7:
+        print("Invalid Move")
+        pos2=7
+        return pos2
+    elif positions[pos]=='-':
+        print("Invalid Move")
+        pos2=7
+        return pos2
+    elif positions[pos]=='G':
+        if (pos+1)<=6 and (positions[pos+1]=='-'):
+            pos2=pos+1
+        elif (pos+2)<=6 and (positions[pos+2]=='-') and (positions[pos+1]=='B'):
+            pos2=pos+2
+        else:
+            print("Invalid Move")
+    elif positions[pos]=='B':
+        if (pos-1)>=0 and (positions[pos-1]=='-'):
+            pos2=pos-1
+        elif (pos-2)>=0 and (positions[pos-2]=='-') and (positions[pos-1]=='G'):
+            pos2=pos-2
+        else:
+            print("Invalid Move")
+    return pos2
+
+# Moving the frog from entered position
+def swapping(pos,pos2,positions):
+    temp = positions[pos2]
+    positions[pos2]=positions[pos]
+    positions[pos]=temp
+    return positions
+
+if __name__ == "__main__":
+
+    positions = ['G', 'G', 'G', '-', 'B', 'B', 'B']
+    index = '[ 0 ,  1 ,  2 ,  3 ,  4 ,  5 ,  6 ]'
+    win_list = ['B', 'B', 'B', '-', 'G', 'G', 'G']
+    pos2 = 0
+    print(index)
+    print(positions)
+
+    while True:
+        x = input("Press q to quit else \nEnter position of piece: ")
+        if x=='q':
+            print("You Lose")
+            break
+        elif x!='q':
+            pos = int(x)
+
+        pos2 = pos_check(pos)
+        if pos2!=7:
+            positions = swapping(pos,pos2,positions)
+            print('\n')
+            print(index)
+            print(positions)
+
+            flag = 0
+            for i in range(0,7):
+                if positions[i]==win_list[i]:
+                    flag+=1
+                else:
+                    break
+
+            if flag==7:
+                print("You Win")
+                break
